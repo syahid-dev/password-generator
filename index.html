@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Password Generator</title>
+</head>
+
+<body>
+	<h1>Password Generator</h1>
+
+	Length : <input type="number" min="1" max="100" value="16" id="length">
+	<button type="button">Generate</button>
+	<br><br>
+	Password : <input type="text" readonly>
+
+	<script>
+		/**
+		 * Generate random integer
+		 *
+		 * @param {number} min Specifies the lowest number to return
+		 * @param {number} max Specifies the highest number to return
+		 *
+		 * @returns {number} A random integer between min and max
+		 */
+		const getRandomInt = (min, max) => {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		};
+
+		/**
+		 * Generate random string
+		 *
+		 * @param {number} length     Specifies the length of the random string
+		 * @param {string} characters define the characters for the string
+		 *
+		 * @returns {string}
+		 */
+		const generateRandomString = (length, characters) => {
+			let result = '';
+
+			for (let i = 0; i < length; i++) {
+				const randIndex = getRandomInt(0, characters.length - 1);
+				const randChar = characters[randIndex];
+
+				result += randChar;
+			}
+
+			return result;
+		};
+
+		/**
+		 * Generate password
+		 * 
+		 * @param {number} length  Specifies the length of the password
+		 * 
+		 * @returns {string}
+		 */
+		const generatePassword = length => {
+			const numbers = '0123456789';
+			const specials = '`-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?';
+			const charsLower = 'abcdefghijklmnopqrstuvwxyz';
+			const charsUpper = charsLower.toUpperCase();
+			const alphabet = charsLower + charsUpper;
+			const alphaNumeric = numbers + alphabet;
+			const all = alphaNumeric + specials;
+
+			return generateRandomString(length, all);
+		};
+
+		document.querySelector('button').onclick = () => {
+			const passwordLength = document.querySelector('input').valueAsNumber || 0;
+			document.querySelector('input[readonly]').value = generatePassword(passwordLength);
+		};
+	</script>
+</body>
